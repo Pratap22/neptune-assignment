@@ -7,25 +7,28 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Divider, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
+export interface WalletDetails {
+  address: string;
+  balance: number | undefined;
+  chainId: number | undefined;
+}
 interface IProps {
-  walletDetails: {
-    address: string;
-    balance: number | undefined;
-    chainId: number | undefined;
-  };
+  walletDetails: WalletDetails;
+  disconnectEtherium: () => void;
+  isDialogOpen: boolean;
+  handleCloseDialog: () => void;
 }
 
-export default function DetailsDialog({walletDetails}: IProps) {
-  const [openDialog, setOpenDialog] = React.useState<boolean>(true);
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
+export default function DetailsDialog({
+  walletDetails,
+  disconnectEtherium,
+  isDialogOpen,
+  handleCloseDialog,
+}: IProps) {
   return (
     <>
       <Dialog
-        open={openDialog}
+        open={isDialogOpen}
         onClose={handleCloseDialog}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -133,7 +136,13 @@ export default function DetailsDialog({walletDetails}: IProps) {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" color="error" fullWidth autoFocus>
+          <Button
+            variant="contained"
+            color="error"
+            fullWidth
+            autoFocus
+            onClick={disconnectEtherium}
+          >
             Disconnect
           </Button>
         </DialogActions>

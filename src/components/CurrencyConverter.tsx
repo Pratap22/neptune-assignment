@@ -8,13 +8,17 @@ interface IStateType {
   BUSD: number;
 }
 
-const InputFields = () => {
+const CurrencyConverter = () => {
   const [convertAmount, setConvertAmount] = useState<IStateType>({
     NEP: 0,
     BUSD: 0,
   });
 
   const [open, setOpen] = useState<boolean>(false);
+
+  const [address, setAddress] = React.useState<string>("");
+  const [balance, setBalance] = React.useState<number | undefined>();
+  const [chainId, setChainId] = React.useState<number | undefined>();
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -102,9 +106,16 @@ const InputFields = () => {
           </Button>
         </Paper>
       </Box>
-      <AlertDialog open={open} setOpen={setOpen} />
+      <AlertDialog
+        open={open}
+        setOpen={setOpen}
+        setAddress={setAddress}
+        setBalance={setBalance}
+        setChainId={setChainId}
+        walletDetails={{ address, chainId, balance }}
+      />
     </>
   );
 };
 
-export default InputFields;
+export default CurrencyConverter;

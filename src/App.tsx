@@ -1,5 +1,5 @@
 import "./App.css";
-import InputFields from "./components/inputFields";
+import CurrencyConverter from "./components/CurrencyConverter";
 
 function App() {
   return (
@@ -7,7 +7,7 @@ function App() {
       <h1>
         <title>Crypto Converter</title>
       </h1>
-      <InputFields />
+      <CurrencyConverter />
     </div>
   );
 }

@@ -5,29 +5,44 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import DetailsDialog from "./detailsDialog";
+import DetailsDialog, { WalletDetails } from "./detailsDialog";
 import { useWeb3Api } from "../provider/web3Provider";
 
 interface IProps {
   open: boolean;
   setOpen: any;
+  setAddress: (address: string) => void;
+  setBalance: (balnce: number | undefined) => void;
+  setChainId: (chainId: number | undefined) => void;
+  walletDetails: WalletDetails;
 }
 
 declare let window: any;
 
-export default function AlertDialog({ open, setOpen }: IProps) {
+export default function AlertDialog({
+  open,
+  setOpen,
+  walletDetails,
+  setAddress,
+  setBalance,
+  setChainId,
+}: IProps) {
   const web3: any = useWeb3Api();
   const [isData, setIsData] = React.useState<boolean>(false);
-  const [address, setAddress] = React.useState<string>("");
-  const [balance, setBalance] = React.useState<number | undefined>();
-  const [chainId, setChainId] = React.useState<number | undefined>();
+  const [isDialogOpen, setDialogOpen] = React.useState<boolean>(false);
+
+  console.log(open, walletDetails);
 
   const handleClose = () => {
     setOpen(false);
+    setDialogOpen(false)
   };
 
   React.useEffect(() => {
-    if (address) setIsData(true);
+    if (walletDetails.address) {
+      setIsData(true);
+      setDialogOpen(true);
+    }
   }, [open]);
 
   const getEthereum = async () => {
@@ -52,7 +67,22 @@ export default function AlertDialog({ open, setOpen }: IProps) {
     } else window.location.reload();
   };
 
-  if (isData) return <DetailsDialog walletDetails={{address, balance, chainId}} />;
+  const disconnectEtherium = async () => {
+    setAddress("");
+    setBalance(undefined);
+    setChainId(undefined);
+    setIsData(false);
+  };
+
+  if (isData)
+    return (
+      <DetailsDialog
+        walletDetails={walletDetails}
+        disconnectEtherium={disconnectEtherium}
+        isDialogOpen={isDialogOpen}
+        handleCloseDialog={() => setDialogOpen(false)}
+      />
+    );
   return (
     <>
       <Dialog
