@@ -7,7 +7,15 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Divider, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
-export default function DetailsDialog() {
+interface IProps {
+  walletDetails: {
+    address: string;
+    balance: number | undefined;
+    chainId: number | undefined;
+  };
+}
+
+export default function DetailsDialog({walletDetails}: IProps) {
   const [openDialog, setOpenDialog] = React.useState<boolean>(true);
 
   const handleCloseDialog = () => {
@@ -74,7 +82,8 @@ export default function DetailsDialog() {
                   justifyContent: "flex-end",
                 }}
               >
-                Address
+                {walletDetails?.address?.substring(0, 5)}....
+                {walletDetails?.address?.substring(37, 50)}
               </Typography>
             </Box>
             <Divider />
@@ -96,7 +105,7 @@ export default function DetailsDialog() {
                   justifyContent: "flex-end",
                 }}
               >
-                ChainId
+                {walletDetails?.chainId}
               </Typography>
             </Box>
             <Divider />
@@ -118,15 +127,9 @@ export default function DetailsDialog() {
                   justifyContent: "flex-end",
                 }}
               >
-                Balance
+                {walletDetails?.balance?.toFixed(1)}
               </Typography>
             </Box>
-            <Typography
-              sx={{ textAlign: "center", opacity: 0.5 }}
-              variant="body2"
-            >
-              Wallet Details
-            </Typography>
           </Box>
         </DialogContent>
         <DialogActions>
